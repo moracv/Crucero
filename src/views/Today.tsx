@@ -1,3 +1,4 @@
+import { parseBody } from '../components/Body';
 import { useState } from 'react';
 import { getOutfit, save, useStore } from '../store';
 import { Header } from '../components/ui';
@@ -55,7 +56,7 @@ export function Today() {
           <div className="outfit-pair">
             {(['dia', 'noche'] as const).map((slot) => (
               <div key={slot} className="outfit-mini" onClick={() => go(`outfit/${day.id}/${slot}/${profile.id}`)}>
-                <MiniOutfit gender={profile.gender} outfit={getOutfit(day.id, profile.id, slot)} items={s.items} />
+                <MiniOutfit gender={profile.gender} outfit={getOutfit(day.id, profile.id, slot)} items={s.items} body={parseBody(profile.gender, profile.body)} />
                 <small>{slot === 'dia' ? '☀️ Día' : '🌙 Noche'}</small>
               </div>
             ))}

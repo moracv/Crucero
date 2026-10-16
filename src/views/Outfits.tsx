@@ -1,3 +1,4 @@
+import { parseBody } from '../components/Body';
 import { getOutfit, useStore } from '../store';
 import { Empty, Header } from '../components/ui';
 import { ProfileSwitch } from '../components/Forms';
@@ -22,7 +23,7 @@ export function Outfits() {
           <div className="outfit-pair">
             {(['dia', 'noche'] as const).map((slot) => (
               <div key={slot} className="outfit-mini" onClick={() => go(`outfit/${d.id}/${slot}/${profile.id}`)}>
-                <MiniOutfit gender={profile.gender} outfit={getOutfit(d.id, profile.id, slot)} items={s.items} />
+                <MiniOutfit gender={profile.gender} outfit={getOutfit(d.id, profile.id, slot)} items={s.items} body={parseBody(profile.gender, profile.body)} />
                 <small>{slot === 'dia' ? '☀️ Día' : `🌙 Noche${d.dress_code === 'gala' ? ' · Gala' : ''}`}</small>
               </div>
             ))}

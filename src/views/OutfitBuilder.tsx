@@ -3,6 +3,8 @@ import { getOutfit, outfitCount, outfitId, save, useStore, imgUrl } from '../sto
 import type { Item, OutfitItems, Slot } from '../types';
 import { Header, Modal } from '../components/ui';
 import { DEFAULT_FIT, Fit, OutfitFigure, parseFit } from '../components/OutfitFigure';
+import { BodyConfig, parseBody } from '../components/Body';
+import { MannequinPanel } from '../components/MannequinPanel';
 import { useWeather, weatherText } from '../components/Weather';
 import { catById, catsForSlot, DRESS_CODES, SLOT_LABEL } from '../catalog';
 import { fmtDate } from '../util';
@@ -49,6 +51,10 @@ export function OutfitBuilder({ dayId, slot, profileId }: { dayId: string; slot:
   const [liveFit, setLiveFit] = useState<Fit | null>(null);
   const saveTimer = useRef<any>(null);
   const selItem = selected ? items.find((i) => i.id === (outfit as any)[selected]) : undefined;
+  const [editBody, setEditBody] = useState(false);
+  const [liveBody, setLiveBody] = useState<BodyConfig | null>(null);
+  const [guides, setGuides] = useState(true);
+  const body = liveBody || (profile ? parseBody(profile.gender, profile.body) : undefined);
 
   function selectSlot(z: Slot) {
     setSelected(z);
@@ -118,7 +124,7 @@ export function OutfitBuilder({ dayId, slot, profileId }: { dayId: string; slot:
 
       <div className="builder" onClick={(e) => { if (e.target === e.currentTarget) setSelected(null); }}>
         <OutfitFigure gender={profile.gender} outfit={outfit} items={items} height={Math.min(460, window.innerHeight * 0.58)}
-          selected={selected} liveFit={liveFit}
+          selected={selected} liveFit={liveFit} body={body} guides={guides && !editBody}
           onTap={(z, has) => { if (!has) setPicker(z); else if (z !== selected) selectSlot(z); }}
           onDrag={(f, done) => { setLiveFit(f); if (done) commitFit(f); }} />
       </div>
@@ -148,12 +154,21 @@ export function OutfitBuilder({ dayId, slot, profileId }: { dayId: string; slot:
             <button className="btn danger" onClick={() => { pick(selected!, []); setSelected(null); }}>Quitar</button>
           </div>
         </section>
+      ) : editBody ? (
+        <MannequinPanel profile={profile} body={body!} onChange={setLiveBody} onClose={() => setEditBody(false)} />
       ) : outfitCount(outfit) > 0 && <p className="muted small center">Toca una prenda para ajustar su tamaño y posición</p>}
 
       <div className="acc-row">
+        <button className={'btn small' + (editBody ? ' primary' : '')} onClick={() => { setSelected(null); setEditBody(!editBody); }}>🧍 Maniquí y cara</button>
+        <button className="btn small" onClick={() => setGuides(!guides)}>{guides ? '🙈 Ocultar guías' : '👁️ Ver guías'}</button>
+      </div>
+      <div className="acc-row">
         {accessories.map((a) => <div key={a.id} className="acc checker">{a.image_key ? <img src={imgUrl(a.image_key)} alt="" /> : a.name}</div>)}
-        <button className="btn small" onClick={() => setPicker('accessory')}>+ Accesorios</button>
+        <button className="btn small" onClick={() => setPicker('head')}>{outfit.head ? '🧢 Cambiar sombrero' : '+ Sombrero / gorra'}</button>
+        {outfit.head && <button className="btn small danger" onClick={() => pick('head', [])}>✕ Sin sombrero</button>}
         <button className="btn small" onClick={() => setPicker('eyes')}>{outfit.eyes ? '🕶️ Cambiar lentes' : '+ Lentes'}</button>
+        {outfit.eyes && <button className="btn small danger" onClick={() => pick('eyes', [])}>✕ Sin lentes</button>}
+        <button className="btn small" onClick={() => setPicker('accessory')}>+ Accesorios</button>
         <button className="btn small" onClick={() => setPicker('outer')}>{outfit.outer ? '🧥 Cambiar abrigo' : '+ Abrigo'}</button>
         {profile.gender === 'M' && <button className="btn small" onClick={() => setPicker('dress')}>{outfit.dress ? '👗 Cambiar vestido' : '+ Vestido'}</button>}
       </div>

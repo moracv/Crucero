@@ -1,4 +1,4 @@
-export interface Profile { id: string; name: string; gender: 'H' | 'M'; color?: string; updated_at?: number }
+export interface Profile { id: string; name: string; gender: 'H' | 'M'; color?: string; body?: string | null; updated_at?: number }
 export interface Trip { id: string; name?: string; cruise_line?: string; ship?: string; start_date?: string; nights?: number; cabin?: string; booking?: string; embark_port?: string; notes?: string; updated_at?: number }
 export type DayType = 'embarque' | 'puerto' | 'navegacion' | 'desembarque';
 export interface Day {

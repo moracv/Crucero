@@ -46,7 +46,7 @@ export function App() {
   switch (view) {
     case 'itinerario': page = <Itinerary />; break;
     case 'dia': page = <DayDetail id={a} />; break;
-    case 'outfit': page = <OutfitBuilder dayId={a} slot={b as any} profileId={c} />; break;
+    case 'outfit': page = <OutfitBuilder key={c} dayId={a} slot={b as any} profileId={c} />; break;
     case 'outfits': page = <Outfits />; break;
     case 'ropa': page = <Catalog />; break;
     case 'maleta': page = <Packing />; break;

@@ -199,3 +199,11 @@ main { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
 .fit-panel input[type='range'] { padding: 0; border: 0; accent-color: var(--sea); }
 .nudge { display: grid; grid-template-columns: repeat(3, 44px); grid-template-areas: '. u .' 'l . r' '. d .'; gap: 4px; justify-content: center; margin: 6px 0; }
 .nudge button:nth-child(1) { grid-area: u; } .nudge button:nth-child(2) { grid-area: l; } .nudge button:nth-child(3) { grid-area: r; } .nudge button:nth-child(4) { grid-area: d; }
+
+/* Editor del maniquí */
+.fit-panel h4 { margin: 12px 0 4px; font-size: .9rem; color: var(--sea-d); }
+.opt-group { margin: 6px 0; }
+.opt-group > span { font-size: .78rem; font-weight: 700; color: var(--muted); }
+.opt-group .chips { margin: 4px 0; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; border: 1px solid #0002; }
+.acc-row + .acc-row { margin-top: 8px; }

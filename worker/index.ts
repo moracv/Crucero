@@ -17,7 +17,7 @@ export interface Env {
 
 // Tablas que el cliente sincroniza y las columnas que puede escribir
 const TABLES: Record<string, string[]> = {
-  profiles: ['name', 'gender', 'color'],
+  profiles: ['name', 'gender', 'color', 'body'],
   trip: ['name', 'cruise_line', 'ship', 'start_date', 'nights', 'cabin', 'booking', 'embark_port', 'notes'],
   days: ['day_number', 'date', 'type', 'port', 'country', 'lat', 'lon', 'tz', 'arrive', 'depart', 'all_aboard', 'dress_code', 'notes'],
   activities: ['day_id', 'profile_id', 'start_time', 'end_time', 'title', 'type', 'location', 'included', 'price', 'currency', 'booked', 'meeting_point', 'notes'],
