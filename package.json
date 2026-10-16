@@ -1,0 +1,43 @@
+{
+  "name": "crucero",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "wrangler dev --local --var DEV_LOGIN:1",
+    "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json && tsc -p worker/tsconfig.json",
+    "db:local": "wrangler d1 migrations apply crucero --local",
+    "db:remote": "wrangler d1 migrations apply crucero --remote",
+    "icons": "node scripts/make-icons.mjs",
+    "vapid": "node scripts/gen-vapid.mjs",
+    "deploy": "vite build && wrangler deploy"
+  },
+  "dependencies": {
+    "@imgly/background-removal": "^1.6.0",
+    "idb-keyval": "^6.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261006.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "^1.0.0",
+    "workbox-expiration": "^7.3.0",
+    "workbox-precaching": "^7.3.0",
+    "workbox-routing": "^7.3.0",
+    "workbox-strategies": "^7.3.0",
+    "wrangler": "^4.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "sharp@0.35.5": true,
+    "workerd@1.20261012.1": true
+  }
+}

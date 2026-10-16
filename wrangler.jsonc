@@ -1,0 +1,33 @@
+{
+  // Worker único: sirve la PWA (carpeta dist) y la API /api/*
+  "name": "crucero",
+  "main": "worker/index.ts",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "crucero",
+      // Reemplazar con el id que devuelve: npx wrangler d1 create crucero
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [{ "binding": "FOTOS", "bucket_name": "crucero-fotos" }],
+  // Revisa los recordatorios pendientes cada 5 minutos y envía las notificaciones push
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "vars": {
+    // ID de cliente OAuth de Google (tipo "Aplicación web")
+    "GOOGLE_CLIENT_ID": "",
+    // Correos autorizados separados por coma. Vacío = solo los 2 primeros usuarios que entren.
+    "ALLOWED_EMAILS": "",
+    // Clave pública VAPID (npm run vapid)
+    "VAPID_PUBLIC_KEY": "",
+    "VAPID_SUBJECT": "mailto:admin@example.com"
+  }
+  // Secretos (npx wrangler secret put ...): SESSION_SECRET, VAPID_PRIVATE_JWK
+}
