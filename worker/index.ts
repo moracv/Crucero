@@ -21,7 +21,7 @@ const TABLES: Record<string, string[]> = {
   trip: ['name', 'cruise_line', 'ship', 'start_date', 'nights', 'cabin', 'booking', 'embark_port', 'notes'],
   days: ['day_number', 'date', 'type', 'port', 'country', 'lat', 'lon', 'tz', 'arrive', 'depart', 'all_aboard', 'dress_code', 'notes'],
   activities: ['day_id', 'profile_id', 'start_time', 'end_time', 'title', 'type', 'location', 'included', 'price', 'currency', 'booked', 'meeting_point', 'notes'],
-  items: ['profile_id', 'kind', 'category', 'name', 'color', 'tags', 'image_key', 'packed', 'qty', 'notes'],
+  items: ['profile_id', 'kind', 'category', 'name', 'color', 'tags', 'image_key', 'packed', 'qty', 'notes', 'fit'],
   outfits: ['day_id', 'profile_id', 'slot', 'items', 'notes'],
   reminders: ['day_id', 'profile_id', 'remind_at', 'title', 'notes', 'done', 'sent'],
 };

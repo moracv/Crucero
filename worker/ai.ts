@@ -82,16 +82,16 @@ Catálogo disponible (JSON): ${JSON.stringify(items)}
 
 Outfits ya asignados en otros días (intenta no repetir la misma combinación): ${JSON.stringify(others)}
 
-Espacios del outfit: head (sombrero/gorra/lentes), top (camisa/polo/blusa), outer (chaqueta/saco), bottom (short/pantalón/falda/traje de baño), dress (vestido/enterizo; si lo usas deja top y bottom vacíos), shoes, accessories (lista).
+Espacios del outfit: head (sombrero/gorra), eyes (lentes de sol), top (camisa/polo/blusa), outer (chaqueta/saco), bottom (short/pantalón/falda/traje de baño), dress (vestido/enterizo; si lo usas deja top y bottom vacíos), shoes, accessories (lista).
 Responde exactamente con este formato:
-{"items":{"head":null,"top":"id","outer":null,"bottom":"id","dress":null,"shoes":"id","accessories":[]},"explicacion":"por qué esta combinación (máx. 2 frases)","faltantes":"prenda que convendría agregar al catálogo, o vacío"}`;
+{"items":{"head":null,"eyes":null,"top":"id","outer":null,"bottom":"id","dress":null,"shoes":"id","accessories":[]},"explicacion":"por qué esta combinación (máx. 2 frases)","faltantes":"prenda que convendría agregar al catálogo, o vacío"}`;
 
   const provider = settings.ai_provider;
   const text = await callLLM(provider, settings.ai_key, settings.ai_model || DEFAULT_MODELS[provider], system, user);
   const out = parseJson(text);
   const valid = new Set(items.map((i: any) => i.id));
   const clean: any = { accessories: [] };
-  for (const k of ['head', 'top', 'outer', 'bottom', 'dress', 'shoes']) {
+  for (const k of ['head', 'eyes', 'top', 'outer', 'bottom', 'dress', 'shoes']) {
     const v = out.items?.[k];
     if (v && valid.has(v)) clean[k] = v;
   }

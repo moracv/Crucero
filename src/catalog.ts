@@ -20,7 +20,7 @@ export const CLOTHES: Category[] = [
   { id: 'sandalias', label: 'Sandalias', slot: 'shoes' },
   { id: 'tenis', label: 'Tenis', slot: 'shoes' },
   { id: 'sombrero', label: 'Sombrero / Gorra', slot: 'head' },
-  { id: 'lentes', label: 'Lentes de sol', slot: 'head' },
+  { id: 'lentes', label: 'Lentes de sol', slot: 'eyes' },
   { id: 'reloj', label: 'Reloj', slot: 'accessory' },
   { id: 'bolso', label: 'Bolso / Mochila', slot: 'accessory' },
   { id: 'joyeria', label: 'Joyería', slot: 'accessory' },
@@ -29,7 +29,7 @@ export const CLOTHES: Category[] = [
 ];
 
 export const SLOT_LABEL: Record<Slot | 'accessory', string> = {
-  head: 'Cabeza', outer: 'Abrigo', top: 'Parte de arriba', dress: 'Vestido', bottom: 'Parte de abajo', shoes: 'Calzado', accessory: 'Accesorios',
+  head: 'Sombrero / gorra', eyes: 'Lentes', outer: 'Abrigo', top: 'Parte de arriba', dress: 'Vestido', bottom: 'Parte de abajo', shoes: 'Calzado', accessory: 'Accesorios',
 };
 
 export const catById = (id: string) => CLOTHES.find((c) => c.id === id);

@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { getOutfit, outfitId, save, useStore, imgUrl } from '../store';
+import { useRef, useState } from 'react';
+import { getOutfit, outfitCount, outfitId, save, useStore, imgUrl } from '../store';
 import type { Item, OutfitItems, Slot } from '../types';
 import { Header, Modal } from '../components/ui';
-import { OutfitFigure } from '../components/OutfitFigure';
+import { DEFAULT_FIT, Fit, OutfitFigure, parseFit } from '../components/OutfitFigure';
 import { useWeather, weatherText } from '../components/Weather';
 import { catById, catsForSlot, DRESS_CODES, SLOT_LABEL } from '../catalog';
 import { fmtDate } from '../util';
@@ -45,12 +45,33 @@ export function OutfitBuilder({ dayId, slot, profileId }: { dayId: string; slot:
   const [ai, setAi] = useState<{ busy?: boolean; msg?: string; error?: string }>({});
   const [request, setRequest] = useState('');
   const { w } = useWeather(day);
+  const [selected, setSelected] = useState<Slot | null>(null);
+  const [liveFit, setLiveFit] = useState<Fit | null>(null);
+  const saveTimer = useRef<any>(null);
+  const selItem = selected ? items.find((i) => i.id === (outfit as any)[selected]) : undefined;
+
+  function selectSlot(z: Slot) {
+    setSelected(z);
+    setLiveFit(parseFit(items.find((i) => i.id === (outfit as any)[z])));
+  }
+  function commitFit(f: Fit, debounce = false) {
+    if (!selItem) return;
+    clearTimeout(saveTimer.current);
+    const run = () => save('items', { ...selItem, fit: JSON.stringify(f) });
+    if (debounce) saveTimer.current = setTimeout(run, 500); else run();
+  }
+  function nudge(dx: number, dy: number) {
+    const f = { ...liveFit!, x: liveFit!.x + dx, y: liveFit!.y + dy };
+    setLiveFit(f);
+    commitFit(f, true);
+  }
   if (!day || !profile) return <div className="page"><Header title="Outfit" backBtn /></div>;
 
   function update(next: OutfitItems, notes = existing?.notes) {
     save('outfits', { id: outfitId(dayId, profileId, slot), day_id: dayId, profile_id: profileId, slot, items: JSON.stringify(next), notes });
   }
   function pick(sl: string, ids: string[]) {
+    if (sl === selected) setSelected(null);
     const next: OutfitItems = { ...outfit };
     if (sl === 'accessory') next.accessories = ids;
     else {
@@ -95,13 +116,44 @@ export function OutfitBuilder({ dayId, slot, profileId }: { dayId: string; slot:
       {slot === 'noche' && dress && <div className="dress center">🎩 Código: {dress.label}</div>}
       {w && <div className="center muted small">{w.icon} {weatherText(w)}</div>}
 
-      <div className="builder">
-        <OutfitFigure gender={profile.gender} outfit={outfit} items={items} onZone={(z) => setPicker(z)} height={Math.min(440, window.innerHeight * 0.55)} />
+      <div className="builder" onClick={(e) => { if (e.target === e.currentTarget) setSelected(null); }}>
+        <OutfitFigure gender={profile.gender} outfit={outfit} items={items} height={Math.min(460, window.innerHeight * 0.58)}
+          selected={selected} liveFit={liveFit}
+          onTap={(z, has) => { if (!has) setPicker(z); else if (z !== selected) selectSlot(z); }}
+          onDrag={(f, done) => { setLiveFit(f); if (done) commitFit(f); }} />
       </div>
+      {selItem ? (
+        <section className="card fit-panel">
+          <div className="card-head">
+            <h3>✋ {selItem.name}</h3>
+            <button className="link" onClick={() => setSelected(null)}>Listo</button>
+          </div>
+          <p className="muted small">Arrastra la prenda sobre la silueta para moverla. El ajuste se guarda en la prenda y se usa en todos los outfits.</p>
+          {([['s', 'Tamaño', 0.4, 1.8], ['sx', 'Ancho', 0.5, 1.6], ['sy', 'Largo', 0.5, 1.6], ['r', 'Girar', -25, 25]] as const).map(([k, label, min, max]) => (
+            <label key={k} className="slider">
+              <span>{label}</span>
+              <input type="range" min={min} max={max} step={k === 'r' ? 1 : 0.02} value={(liveFit as any)?.[k] ?? 0}
+                onChange={(e) => { const f = { ...liveFit!, [k]: Number(e.target.value) }; setLiveFit(f); commitFit(f, true); }} />
+            </label>
+          ))}
+          <div className="nudge">
+            <button className="btn small" onClick={() => nudge(0, -3)}>▲</button>
+            <button className="btn small" onClick={() => nudge(-3, 0)}>◀</button>
+            <button className="btn small" onClick={() => nudge(3, 0)}>▶</button>
+            <button className="btn small" onClick={() => nudge(0, 3)}>▼</button>
+          </div>
+          <div className="row">
+            <button className="btn ghost" onClick={() => { setLiveFit(DEFAULT_FIT); commitFit(DEFAULT_FIT); }}>Restablecer</button>
+            <button className="btn" onClick={() => setPicker(selected)}>Cambiar prenda</button>
+            <button className="btn danger" onClick={() => { pick(selected!, []); setSelected(null); }}>Quitar</button>
+          </div>
+        </section>
+      ) : outfitCount(outfit) > 0 && <p className="muted small center">Toca una prenda para ajustar su tamaño y posición</p>}
 
       <div className="acc-row">
         {accessories.map((a) => <div key={a.id} className="acc checker">{a.image_key ? <img src={imgUrl(a.image_key)} alt="" /> : a.name}</div>)}
         <button className="btn small" onClick={() => setPicker('accessory')}>+ Accesorios</button>
+        <button className="btn small" onClick={() => setPicker('eyes')}>{outfit.eyes ? '🕶️ Cambiar lentes' : '+ Lentes'}</button>
         <button className="btn small" onClick={() => setPicker('outer')}>{outfit.outer ? '🧥 Cambiar abrigo' : '+ Abrigo'}</button>
         {profile.gender === 'M' && <button className="btn small" onClick={() => setPicker('dress')}>{outfit.dress ? '👗 Cambiar vestido' : '+ Vestido'}</button>}
       </div>

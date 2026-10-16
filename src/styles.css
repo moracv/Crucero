@@ -115,10 +115,11 @@ main { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
 
 /* Silueta y outfits */
 .figure { position: relative; margin: 0 auto; flex: none; }
-.silhouette { position: absolute; inset: 0; width: 100%; height: 100%; fill: var(--sil); }
+.silhouette { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 3px 4px #0002); }
 .garment { position: absolute; object-fit: contain; filter: drop-shadow(0 2px 3px #0003); }
 .garment-text { display: flex; align-items: center; justify-content: center; background: #e0f2fe; border-radius: 8px; font-size: .75rem; text-align: center; padding: 2px; }
-.zone { position: absolute; border: 2px dashed var(--sea); background: #ecfeffcc; border-radius: 12px; color: var(--sea-d); font-size: .72rem; font-weight: 700; padding: 2px; }
+.zone { position: absolute; border: 2px dashed #0e749088; background: transparent; border-radius: 12px; padding: 0; display: flex; align-items: center; justify-content: center; }
+.zone span { background: #fffffff0; color: var(--sea-d); font-size: .7rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; box-shadow: 0 1px 3px #0002; white-space: nowrap; }
 .builder { display: flex; justify-content: center; padding: 10px 0; background: radial-gradient(circle at 50% 40%, #fff, #e0f2fe); border-radius: var(--radius); margin: 8px 0; }
 .outfit-pair { display: flex; justify-content: space-around; gap: 10px; }
 .outfit-mini { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px; border-radius: 12px; background: linear-gradient(#f8fafc, #e0f2fe); flex: 1; }
@@ -173,3 +174,28 @@ main { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
 .splash { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
 .splash img { width: 96px; border-radius: 24px; animation: pulse 1.2s infinite alternate; }
 @keyframes pulse { to { transform: scale(1.08); } }
+
+/* Cámara integrada */
+.camera { position: fixed; inset: 0; z-index: 100; background: #000; display: flex; flex-direction: column; justify-content: center; }
+.camera video { width: 100%; height: 100%; object-fit: cover; }
+.camera-bar { position: absolute; bottom: calc(24px + env(safe-area-inset-bottom)); left: 0; right: 0; display: flex; justify-content: space-around; align-items: center; }
+.camera-bar .btn { background: #0008; color: #fff; border-color: #fff4; font-size: .8rem; }
+.shutter { width: 72px; height: 72px; border-radius: 50%; border: 5px solid #fff; background: #ffffffaa; }
+.shutter:active { background: #fff; transform: scale(.95); }
+.camera-tip { position: absolute; top: calc(16px + env(safe-area-inset-top)); left: 16px; right: 16px; color: #fff; text-align: center; font-size: .85rem; background: #0006; border-radius: 10px; padding: 6px; }
+
+/* Avance al quitar el fondo */
+.photo-preview { position: relative; }
+.photo-progress { position: absolute; left: 12px; right: 12px; bottom: 12px; background: #fffe; border-radius: 12px; padding: 8px 10px; box-shadow: 0 2px 8px #0002; }
+.photo-progress .bar { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-bottom: 4px; }
+.photo-progress .bar div { height: 100%; background: linear-gradient(90deg, var(--sea), #22d3ee); transition: width .25s; }
+.photo-progress small { color: var(--text); font-weight: 600; }
+
+/* Ajuste de prendas */
+.garment { transform-origin: 50% 30%; cursor: pointer; user-select: none; -webkit-user-drag: none; }
+.garment.selected { outline: 2px dashed var(--sun); outline-offset: 2px; border-radius: 6px; cursor: grab; }
+.fit-panel .slider { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 8px; margin: 6px 0; }
+.fit-panel .slider span { font-size: .85rem; font-weight: 600; color: var(--muted); }
+.fit-panel input[type='range'] { padding: 0; border: 0; accent-color: var(--sea); }
+.nudge { display: grid; grid-template-columns: repeat(3, 44px); grid-template-areas: '. u .' 'l . r' '. d .'; gap: 4px; justify-content: center; margin: 6px 0; }
+.nudge button:nth-child(1) { grid-area: u; } .nudge button:nth-child(2) { grid-area: l; } .nudge button:nth-child(3) { grid-area: r; } .nudge button:nth-child(4) { grid-area: d; }

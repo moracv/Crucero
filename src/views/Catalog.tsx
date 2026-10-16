@@ -27,7 +27,7 @@ function ItemForm({ item, profileId, gender, onClose }: { item?: Item; profileId
 
   return (
     <Modal title={item ? 'Editar prenda' : 'Nueva prenda'} onClose={onClose}>
-      <PhotoInput onPhoto={setPhoto} preview={imgUrl(it.image_key)} />
+      <PhotoInput onPhoto={setPhoto} onBusy={setBusy} preview={imgUrl(it.image_key)} />
       <Field label="Tipo">
         <select value={it.category} onChange={(e) => setIt({ ...it, category: e.target.value })}>
           {cats.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}

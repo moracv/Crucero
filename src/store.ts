@@ -198,4 +198,4 @@ export function parseItems(o?: Outfit): OutfitItems {
   try { return typeof o.items === 'string' ? JSON.parse(o.items) : (o.items as any) || {}; } catch { return {}; }
 }
 export const outfitCount = (it: OutfitItems) =>
-  ['head', 'outer', 'top', 'dress', 'bottom', 'shoes'].filter((k) => (it as any)[k]).length + (it.accessories?.length || 0);
+  ['head', 'eyes', 'outer', 'top', 'dress', 'bottom', 'shoes'].filter((k) => (it as any)[k]).length + (it.accessories?.length || 0);
