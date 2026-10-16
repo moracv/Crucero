@@ -22,7 +22,7 @@
   "triggers": { "crons": ["*/5 * * * *"] },
   "vars": {
     // ID de cliente OAuth de Google (tipo "Aplicación web")
-    "GOOGLE_CLIENT_ID": "",
+    "GOOGLE_CLIENT_ID": "239086184312-o8qqh13opdjklgffjmi56tt418hl1b6n.apps.googleusercontent.com",
     // Correos autorizados separados por coma. Vacío = solo los 2 primeros usuarios que entren.
     "ALLOWED_EMAILS": "",
     // Clave pública VAPID (npm run vapid)
