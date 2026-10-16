@@ -13,7 +13,7 @@
       "binding": "DB",
       "database_name": "crucero",
       // Reemplazar con el id que devuelve: npx wrangler d1 create crucero
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "be4acd93-a00b-401a-882c-0af8c18837c8",
       "migrations_dir": "migrations"
     }
   ],
@@ -26,8 +26,8 @@
     // Correos autorizados separados por coma. Vacío = solo los 2 primeros usuarios que entren.
     "ALLOWED_EMAILS": "",
     // Clave pública VAPID (npm run vapid)
-    "VAPID_PUBLIC_KEY": "",
-    "VAPID_SUBJECT": "mailto:admin@example.com"
+    "VAPID_PUBLIC_KEY": "BOW-ON-Je8oBYbSY8cOvPYhpoL6vM9dqHwK_tKvo_v9vyD9nrK_rx1KRGzC7FeQfHd4Jd7My3Uc-yFkxh29k-jQ",
+    "VAPID_SUBJECT": "https://crucero.moracv.workers.dev"
   }
   // Secretos (npx wrangler secret put ...): SESSION_SECRET, VAPID_PRIVATE_JWK
 }
