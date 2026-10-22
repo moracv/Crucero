@@ -207,3 +207,7 @@ main { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
 .opt-group .chips { margin: 4px 0; }
 .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; border: 1px solid #0002; }
 .acc-row + .acc-row { margin-top: 8px; }
+
+.install-card { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #ecfeff, #fff7ed); }
+.install-card > span { font-size: 1.8rem; }
+.install-card small { display: block; color: var(--muted); font-size: .8rem; }

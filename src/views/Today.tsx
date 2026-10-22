@@ -9,11 +9,13 @@ import { actType, dayType } from '../catalog';
 import { currentDay, fmtDate, fmtDateTime } from '../util';
 import { go } from '../router';
 import { missingData } from '../alerts';
+import { promptInstall, useCanInstall } from '../install';
 
 export function Today() {
   const s = useStore();
   const [showAlerts, setShowAlerts] = useState(false);
   const [newRem, setNewRem] = useState(false);
+  const canInstall = useCanInstall();
   const { day, status, diff } = currentDay(s.trip, s.days);
   const profile = s.profiles.find((p) => p.id === s.viewProfileId);
   const alerts = missingData(s, s.viewProfileId);
@@ -30,6 +32,14 @@ export function Today() {
 
       {status === 'antes' && <div className="hero"><b>{diff}</b><span>{diff === 1 ? 'día' : 'días'} para zarpar 🛳️</span></div>}
       {status === 'despues' && <div className="hero small-hero">¡Crucero terminado! Esperamos que lo hayan disfrutado 🌅</div>}
+
+      {canInstall && (
+        <section className="card install-card">
+          <span>📲</span>
+          <div className="grow"><b>Instala Mi Crucero</b><small>Ábrela como app desde tu pantalla de inicio, también sin internet.</small></div>
+          <button className="btn primary small" onClick={promptInstall}>Instalar</button>
+        </section>
+      )}
 
       <ProfileSwitch />
 

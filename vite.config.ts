@@ -12,6 +12,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectManifest: { globPatterns: ['**/*.{js,css,html,png,svg,ico,webmanifest}'], maximumFileSizeToCacheInBytes: 5 * 1024 * 1024 },
       manifest: {
+        id: '/',
         name: 'Mi Crucero',
         short_name: 'Crucero',
         description: 'Itinerario, outfits y equipaje del crucero',

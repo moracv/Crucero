@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { flush, logout, refresh, setMyProfile, setSettingsLocal, useStore } from '../store';
 import { Field, Header } from '../components/ui';
 import { go } from '../router';
+import { isInstalled, promptInstall, useCanInstall } from '../install';
 
 function urlB64ToUint8(base64: string) {
   const pad = '='.repeat((4 - (base64.length % 4)) % 4);
@@ -65,6 +66,18 @@ function Notifications() {
   );
 }
 
+function InstallCard() {
+  const canInstall = useCanInstall();
+  return (
+    <section className="card">
+      <h3>📲 App en el celular</h3>
+      {isInstalled() ? <p className="small">✅ Estás usando la app instalada.</p>
+        : canInstall ? <button className="btn primary block" onClick={promptInstall}>Instalar app</button>
+        : <p className="muted small">En Chrome toca el menú ⋮ y elige <b>Instalar app</b> o <b>Agregar a la pantalla principal</b>.</p>}
+    </section>
+  );
+}
+
 function AISettings() {
   const s = useStore();
   const [provider, setProvider] = useState(s.settings?.ai_provider || 'anthropic');
@@ -121,6 +134,7 @@ export function Settings() {
           <button className="btn ghost" onClick={logout}>Cerrar sesión</button>
         </div>
       </section>
+      <InstallCard />
       <Notifications />
       <AISettings />
       <section className="card">
